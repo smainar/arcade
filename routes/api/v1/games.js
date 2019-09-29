@@ -50,7 +50,7 @@ router.post("/", function(req, res, next) {
     });
 });
 
-/* UPDATE a single resource */ 
+/* UPDATE a single resource */
 router.put("/:id", function (req, res, next) {
   Game.update(
     {
@@ -75,5 +75,22 @@ router.put("/:id", function (req, res, next) {
       res.status(500).send({ error });
     });
 });
+
+/* DELETE a single game */
+router.delete("/:id", function(req, res, next) {
+  Game.destroy({
+    where: {
+      id: req.params.id
+    }
+  })
+  .then(game => {
+    res.setHeader("Content-Type", "application/json");
+    res.status(204).send(JSON.stringify(game));
+  })
+  .catch(error => {
+    res.setHeader("Content-Type", "application/json");
+    res.status(500).send({ error });
+  });
+})
 
 module.exports = router; //this should stay at the bottom of the file
